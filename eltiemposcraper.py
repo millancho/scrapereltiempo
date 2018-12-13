@@ -90,7 +90,7 @@ for page in pages:
                                   'Link':links})
             
     if count==50 :
-        test_df.to_excel("eltiempo.xlsx")  
+        test_df.to_excel("eltiempo_" + keyword + ".xlsx")    
         count=0
       
 test_df.to_excel("eltiempo_" + keyword + ".xlsx")     
