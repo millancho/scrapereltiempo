@@ -27,8 +27,7 @@ count = 0
 
 for page in pages:
     
-    url = "https://www.elespectador.com/search/" + keyword + "?page=" + page + ""
-    print(url)
+    url = "https://www.elespectador.com/search/" + keyword + "?page=" + page
     html = get(url)
     htmlsoup = soup(html.content,'html.parser')
     time.sleep(randint(2,4))
