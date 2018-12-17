@@ -38,6 +38,11 @@ for page in pages:
     clear_output(wait = True)
     
     if (error != None):
+        print("There were no more articles found with your keyword")
+        test_df=pd.DataFrame({'Titulo':titles,
+                                  'Fecha':dates,
+                                  'Contenido':contents,
+                                  'Link':links})
         break
     else:   
         articles = htmlsoup.find_all('h3', class_="title-container")
@@ -58,6 +63,7 @@ for page in pages:
                     time.sleep(3)
                     print("Let's try again...")
                     continue
+            print(url2)
             noodles=soup(link.content,'html.parser')
             especial=noodles.find('p',class_="contenido")
             if especial != None :
