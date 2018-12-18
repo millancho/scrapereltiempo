@@ -4,13 +4,7 @@ import pandas as pd
 import time
 from IPython.core.display import clear_output
 from random import randint
-import datetime
 
-
-
-now=datetime.datetime.now()
-dia=str(now)
-dia=dia[2:10]
 
 keyword = input("What is the keyword you wanna look up?(e.g 'paro' o 'huelga de maestros')\n")
 
