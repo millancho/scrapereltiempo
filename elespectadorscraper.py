@@ -4,7 +4,13 @@ import pandas as pd
 import time
 from IPython.core.display import clear_output
 from random import randint
+import datetime
 
+
+
+now=datetime.datetime.now()
+dia=str(now)
+dia=dia[2:10]
 
 keyword = input("What is the keyword you wanna look up?(e.g 'paro' o 'huelga de maestros')\n")
 
@@ -21,7 +27,8 @@ count = 0
 
 for page in pages:
     
-    url = "https://www.elespectador.com/search/" + keyword + "?page=" + page
+    url = "https://www.elespectador.com/search/" + keyword + "?page=" + page + ""
+    print(url)
     html = get(url)
     htmlsoup = soup(html.content,'html.parser')
     time.sleep(randint(2,4))
@@ -62,7 +69,8 @@ for page in pages:
                 content=especial.find_all('p')
                 if content != None:
                     date = noodles.find('div',class_="node-post-date field field--name-post-date field--type-ds field--label-hidden").text
-                    date = date[:-11]
+                    date = date[0:12].strip()
+                    date = date.replace("-","")
                     titles.append(title)
                     texto=''
                     for textos in content:
