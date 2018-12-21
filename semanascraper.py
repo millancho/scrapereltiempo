@@ -123,7 +123,7 @@ for page in pages:
                               'Link':links})
             
     if count==10 :
-        test_df.to_excel("semana" + keyword + ".xlsx")   
+        test_df.to_excel("semana_" + keyword + ".xlsx")   
         count=0
       
-test_df.to_excel("semana" + keyword + ".xlsx")     
+test_df.to_excel("semana_" + keyword + ".xlsx")     
