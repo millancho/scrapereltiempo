@@ -8,11 +8,6 @@ import datetime
 from collections import OrderedDict
 
 
-
-now=datetime.datetime.now()
-dia=str(now)
-dia=dia[2:10]
-
 keyword = input("What is the keyword you wanna look up?(e.g 'paro' o 'huelga de maestros')\n")
 
 titles = []
@@ -51,7 +46,7 @@ for page in pages:
     else:   
         for oneArticle in articles:
             title = oneArticle.h2.a.text
-            link = oneArticle.a['href']
+            link = oneArticle.h2.a['href']
             content = ''
             url2 = link
             link = ''
