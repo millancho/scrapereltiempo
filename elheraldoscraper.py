@@ -50,7 +50,7 @@ for page in pages:
         break
     else:   
         for oneArticle in articles:
-            title = oneArticle.img['alt']
+            title = oneArticle.h2.a.text
             link = oneArticle.a['href']
             content = ''
             url2 = link
