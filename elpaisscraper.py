@@ -8,6 +8,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup as bs
 import time
 import pandas as pd
+from IPython.core.display import clear_output
 
 titles = []
 dates = []
@@ -15,23 +16,32 @@ links = []
 contents = []
 keyword = input("What is the keyword you wanna look up?(e.g 'paro' o 'huelga de maestros')\n")
 pages = [str(i) for i in range(1,5000)]
-browser = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+browser = webdriver.Chrome(options=options)
 count = 0
+requests = 0
+start_time = time.time()
 
 for page in pages:
     
-    count += 1
     browser.get("https://elpais.com/buscador/?qt=" + keyword + "&sf=0&np=" + page + "&bu=ep&of=html")
     time.sleep(2)
     browser.refresh()
     html = browser.page_source
     soup = bs(html, 'html5lib')
+    count += 1
+    requests += 1
+    elapsed_time = time.time() - start_time    
+    print('Request:{}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
+    clear_output(wait = True)
     containers = soup.find_all('div', class_="article")
     if len(containers) != 0:
         for container in containers:
             titulo = container.find('h2').a.text
             fecha = container.find('span', attrs={'class':'fecha'}).text
             link = "http://elpais.com" + container.find('h2').a['href']
+            print(link)
             browser.get(link)
             time.sleep(2)
             browser.refresh()
