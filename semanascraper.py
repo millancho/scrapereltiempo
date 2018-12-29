@@ -38,6 +38,8 @@ for page in pages:
     url = "https://www.semana.com/Buscador?query=" + keyword + "&post=semana&limit=10&offset=" + page + "&from=2000%2F01%2F01&facet0=type%2FArt%C3%ADculo"
     print(url)
     browser.get(url)
+    time.sleep(2)
+    browser.refresh()
     html = browser.page_source
     htmlsoup = soup(html, 'html5lib')
     time.sleep(randint(2,4))
