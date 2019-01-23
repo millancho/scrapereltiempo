@@ -15,7 +15,7 @@ contents = []
 dates = []
 start_time = time.time()
 requests = 0
-pages = [str(i) for i in range(33,5500)]
+pages = [str(i) for i in range(1,5500)]
 count = 0
 repeat = ''
 done = False
@@ -23,7 +23,7 @@ done = False
 for page in pages:
     
     page = str(int(page)-1)
-    url = "https://www.vanguardia.com/search/node/" + keyword + "?page=" + page
+    url = "https://www.vanguardia.com/busquedas/-/search/" + keyword + "/false/false/19190123/20190123/date/true/true/0/0/meta/0/0/0/" + page    url = "https://www.vanguardia.com/search/node/" + keyword + "?page=" + page
     print(url)
     html = get(url)
     htmlsoup = soup(html.content,'html.parser')
