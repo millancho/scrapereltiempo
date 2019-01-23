@@ -41,12 +41,19 @@ for page in pages:
             titulo = container.find('h2').a.text
             fecha = container.find('span', attrs={'class':'fecha'}).text
             link = "http://elpais.com" + container.find('h2').a['href']
+            noodles = ''
+            while noodles == '':
+                try:
+                    browser.get(link)
+                    noodles = browser.page_source
+                    break
+                except:
+                    print("Connection refused by the server")
+                    time.sleep(3)
+                    print("Let's try again...")
+                    continue  
             print(link)
-            browser.get(link)
-            time.sleep(2)
-            browser.refresh()
-            html2 = browser.page_source
-            soup2 = bs(html2, 'html5lib')
+            soup2 = bs(noodles, 'html5lib')
             content = soup2.find('div', attrs={'class':'articulo-cuerpo'})
             if content != None :
                 textos = content.find_all('p')
