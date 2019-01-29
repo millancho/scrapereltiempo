@@ -90,11 +90,16 @@ for page in pages:
                     objDate = datetime.datetime.strptime(date, '%Y/%m/%d')
                     strDate = datetime.datetime.strftime(objDate, '%b %d %Y')
                     
+                title = ''
                 
-                if noodles.find('h1', class_="tittleArticuloOpinion")== None:
-                    title=noodles.find('h1', class_="nameColumnista").text.strip()
+                if noodles.find('h1', class_="tittleArticuloOpinion") != None:
+                    title = noodles.find('h1', class_="tittleArticuloOpinion").text.strip()
                 else:
-                    title=noodles.find('h1', class_="tittleArticuloOpinion").text.strip()
+                    if noodles.find('h1', class_="nameColumnista") != None:
+                        title = noodles.find('h1', class_="nameColumnista").text.strip()
+                    if noodles.find('h2', class_ = "article-h") != None:
+                        title = noodles.find('h2', class_ = "article-h").text.strip()
+                                     
                     
                 titles.append(title)
                 texto=''
