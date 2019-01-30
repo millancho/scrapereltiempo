@@ -118,6 +118,13 @@ for page in pages:
             else :
                 date = 0
                 title = ''
+                if noodles.find('h1', class_="tittleArticuloOpinion") != None:
+                    title = noodles.find('h1', class_="tittleArticuloOpinion").text.strip()
+                else:
+                    if noodles.find('h1', class_="nameColumnista") != None:
+                        title = noodles.find('h1', class_="nameColumnista").text.strip()
+                    if noodles.find('h2', class_ = "article-h") != None:
+                        title = noodles.find('h2', class_ = "article-h").text.strip()
                 titles.append(title)
                 content="Especial"
                 contents.append(content)
