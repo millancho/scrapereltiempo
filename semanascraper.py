@@ -75,7 +75,6 @@ for page in pages:
                     continue
             print(url2)    
             noodles=soup(link,'html5lib')
-            noodles.find_all
             content=noodles.find_all('div', id="contentItem")
             if len(content) != 0 :
                 tipo=''
