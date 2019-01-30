@@ -118,6 +118,7 @@ for page in pages:
     
             else :
                 date = 0
+                title = ''
                 titles.append(title)
                 content="Especial"
                 contents.append(content)
