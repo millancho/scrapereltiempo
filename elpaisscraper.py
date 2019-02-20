@@ -4,80 +4,105 @@
 # In[ ]:
 
 
-from selenium import webdriver
-from bs4 import BeautifulSoup as bs
-import time
+from bs4 import BeautifulSoup as soup
+from requests import get
 import pandas as pd
+import time
 from IPython.core.display import clear_output
+from random import randint
+import datetime
+
+
+now=datetime.datetime.now()
+dia=str(now)
+dia=dia[0:10].replace('-','')
+
+keyword = input("What is the keyword you wanna look up?(e.g 'paro' o 'huelga de maestros')\n")
 
 titles = []
-dates = []
 links = []
 contents = []
-keyword = input("What is the keyword you wanna look up?(e.g 'paro' o 'huelga de maestros')\n")
-pages = [str(i) for i in range(1,5000)]
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-browser = webdriver.Chrome(options=options)
-count = 0
-requests = 0
+dates = []
+
 start_time = time.time()
+requests = 0
+pages = [str(i) for i in range(1,5500)]
+count = 0
 
 for page in pages:
     
-    browser.get("https://elpais.com/buscador/?qt=" + keyword + "&sf=0&np=" + page + "&bu=ep&of=html")
-    time.sleep(2)
-    browser.refresh()
-    html = browser.page_source
-    soup = bs(html, 'html5lib')
-    count += 1
+    url = "https://www.eluniversal.com.co/busqueda/-/search/" + keyword + "/false/false/20000101/" + dia + "/date/true/true/0/0/meta/0/0/0/" + page
+    html = get(url)
+    htmlsoup = soup(html.content,'html5lib')
+    time.sleep(randint(2,4))
     requests += 1
-    elapsed_time = time.time() - start_time    
+    count += 1
+    elapsed_time = time.time() - start_time
     print('Request:{}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
-    clear_output(wait = True)
-    containers = soup.find_all('div', class_="article")
-    if len(containers) != 0:
-        for container in containers:
-            titulo = container.find('h2').a.text
-            fecha = container.find('span', attrs={'class':'fecha'}).text
-            link = "http://elpais.com" + container.find('h2').a['href']
-            noodles = ''
-            while noodles == '':
+    clear_output(wait = True)  
+    print(url)
+    articles = htmlsoup.find_all('div', class_="contenido")
+    if len(articles) != 0:
+        for oneArticle in articles:
+                
+            title = oneArticle.span.text
+            link = "https://www.eluniversal.com.co" + oneArticle.a['href']
+            date = ''
+            content = ''
+            html2 = ''
+            print(link)
+            while html2 == '':
                 try:
-                    browser.get(link)
-                    noodles = browser.page_source
+                    html2 = get(link)
                     break
                 except:
                     print("Connection refused by the server")
                     time.sleep(3)
                     print("Let's try again...")
-                    continue  
-            print(link)
-            soup2 = bs(noodles, 'html5lib')
-            content = soup2.find('div', attrs={'class':'articulo-cuerpo'})
-            if content != None :
-                textos = content.find_all('p')
-                if len(textos) != 0:
-                    texto = ''
-                    for text in textos:
-                        texto += text.getText()
-                else:
-                    texto = "Especial"
+                    continue
+            noodles = soup(html2.content,'html5lib')
+            if noodles.find('span', class_="datefrom small") != None:
+                date = noodles.find('span', class_="datefrom small").text
+                date = date[:-8]
             else:
-                texto = "Especial"
-            contents.append(texto)
-            titles.append(titulo)
-            dates.append(fecha)
-            links.append(link)
-        resultados = pd.DataFrame({'Titulo':titles,
-                                'Fecha':dates,
-                                'Link':links,
-                                'Contenido':contents})
+                date = "Especial"
+            especial = noodles.find('div', attrs={'class': 'text small resizable'})
+            textos = especial.find_all('p')
+            
+            if len(textos) != 0 :
+                for texto in textos:
+                    content+=texto.getText()
+                titles.append(title)
+                contents.append(content)
+                dates.append(date)
+                links.append(link) 
+                test_df=pd.DataFrame({'Titulo':titles,
+                              'Fecha':dates,
+                              'Contenido':contents,
+                              'Link':links})
+        
+            else :
+                titles.append(title)
+                dates.append(date)
+                content="Especial"
+                contents.append(content)
+                links.append(link)
+                
+                test_df=pd.DataFrame({'Titulo':titles,
+                              'Fecha':dates,
+                              'Contenido':contents,
+                              'Link':links})
     else:
-        print("There were no more articles found for your keyword")
+        test_df=pd.DataFrame({'Titulo':titles,
+                                  'Fecha':dates,
+                                  'Contenido':contents,
+                                  'Link':links})
+        print("There were no more articles found with your keyword")
         break
-    if count == 5:
-        count = 0
-        resultados.to_excel("elpais_" + keyword + ".xlsx")
-resultados.to_excel("elpais_" + keyword + ".xlsx")
-
+        
+            
+    if count==10 :
+        test_df.to_excel("eluniversal_" + keyword + ".xlsx")   
+        count=0
+  
+test_df.to_excel("eluniversal_" + keyword + ".xlsx") 
