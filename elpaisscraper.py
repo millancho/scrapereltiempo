@@ -10,12 +10,7 @@ import pandas as pd
 import time
 from IPython.core.display import clear_output
 from random import randint
-import datetime
 
-
-now=datetime.datetime.now()
-dia=str(now)
-dia=dia[0:10].replace('-','')
 
 keyword = input("What is the keyword you wanna look up?(e.g 'paro' o 'huelga de maestros')\n")
 
@@ -31,7 +26,7 @@ count = 0
 
 for page in pages:
     
-    url = "https://www.eluniversal.com.co/busqueda/-/search/" + keyword + "/false/false/20000101/" + dia + "/date/true/true/0/0/meta/0/0/0/" + page
+    url = "https://www.elpais.com.co/search/listing/0/" + i + "/" + keyword
     html = get(url)
     htmlsoup = soup(html.content,'html5lib')
     time.sleep(randint(2,4))
@@ -41,12 +36,12 @@ for page in pages:
     print('Request:{}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
     clear_output(wait = True)  
     print(url)
-    articles = htmlsoup.find_all('div', class_="contenido")
+    articles = soup.find_all('div', class_="listing-item")
     if len(articles) != 0:
         for oneArticle in articles:
                 
-            title = oneArticle.span.text
-            link = "https://www.eluniversal.com.co" + oneArticle.a['href']
+            title = oneArticle.h3.a.text.strip()
+            link = "http://www.elpais.com.co" + oneArticle.h3.a['href']
             date = ''
             content = ''
             html2 = ''
@@ -61,37 +56,33 @@ for page in pages:
                     print("Let's try again...")
                     continue
             noodles = soup(html2.content,'html5lib')
-            if noodles.find('span', class_="datefrom small") != None:
-                date = noodles.find('span', class_="datefrom small").text
-                date = date[:-8]
-            else:
-                date = "Especial"
-            especial = noodles.find('div', attrs={'class': 'text small resizable'})
-            textos = especial.find_all('p')
-            
-            if len(textos) != 0 :
-                for texto in textos:
-                    content+=texto.getText()
+            content = noodles.find('div', attrs = {'class':'article-content'})           
+            if content == None :
+                content = noodles.find('div', attrs = {'class':'content-modules'})
+            if content == None:
                 titles.append(title)
-                contents.append(content)
+                dates.append(date)
+                texto="Especial"
+                contents.append(texto)
+                links.append(link)
+                test_df=pd.DataFrame({'Titulo':titles,
+                              'Fecha':dates,
+                              'Contenido':contents,
+                              'Link':links})
+            else:
+                texto = ''
+                for textos in content.find_all('p'):
+                    texto += textos.getText()   
+                
+                titles.append(title)
+                contents.append(texto)
                 dates.append(date)
                 links.append(link) 
                 test_df=pd.DataFrame({'Titulo':titles,
                               'Fecha':dates,
                               'Contenido':contents,
                               'Link':links})
-        
-            else :
-                titles.append(title)
-                dates.append(date)
-                content="Especial"
-                contents.append(content)
-                links.append(link)
-                
-                test_df=pd.DataFrame({'Titulo':titles,
-                              'Fecha':dates,
-                              'Contenido':contents,
-                              'Link':links})
+                       
     else:
         test_df=pd.DataFrame({'Titulo':titles,
                                   'Fecha':dates,
@@ -102,7 +93,7 @@ for page in pages:
         
             
     if count==10 :
-        test_df.to_excel("eluniversal_" + keyword + ".xlsx")   
+        test_df.to_excel("elpais_" + keyword + ".xlsx")   
         count=0
   
-test_df.to_excel("eluniversal_" + keyword + ".xlsx") 
+test_df.to_excel("elpais_" + keyword + ".xlsx") 
