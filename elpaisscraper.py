@@ -26,7 +26,7 @@ count = 0
 
 for page in pages:
     
-    url = "https://www.elpais.com.co/search/listing/0/" + i + "/" + keyword
+    url = "https://www.elpais.com.co/search/listing/0/" + page + "/" + keyword
     html = get(url)
     htmlsoup = soup(html.content,'html5lib')
     time.sleep(randint(2,4))
@@ -36,7 +36,7 @@ for page in pages:
     print('Request:{}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
     clear_output(wait = True)  
     print(url)
-    articles = soup.find_all('div', class_="listing-item")
+    articles = htmlsoup.find_all('div', class_="listing-item")
     if len(articles) != 0:
         for oneArticle in articles:
                 
