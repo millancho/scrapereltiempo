@@ -16,7 +16,7 @@ dates = []
 
 start_time = time.time()
 requests = 0
-pages = [str(i) for i in range(0,5500)]
+pages = [str(i) for i in range(1,5500)]
 count = 0
 
 for page in pages:
