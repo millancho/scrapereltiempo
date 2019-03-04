@@ -4,12 +4,8 @@ import pandas as pd
 import time
 from IPython.core.display import clear_output
 from random import randint
-import datetime
 
 
-now=datetime.datetime.now()
-dia=str(now)
-dia=dia[0:10].replace('-','')
 
 keyword = input("What is the keyword you wanna look up?(e.g 'paro' o 'huelga de maestros')\n")
 
@@ -37,8 +33,7 @@ for page in pages:
     print(url)
     articles = htmlsoup.find_all('div', attrs={'class':'resultado'})
     if len(articles) != 0:
-        for oneArticle in articles:
-                
+        for oneArticle in articles:            
             title = oneArticle.h3.text
             link = oneArticle.h3.a['href']
             date = oneArticle.find('div', class_= "fecha").text
@@ -94,7 +89,7 @@ for page in pages:
         
             
 if count==10 :
-    test_df.to_excel("eluniversal_" + keyword + ".xlsx")   
+    test_df.to_excel("laopinion_" + keyword + ".xlsx")   
     count=0
   
-test_df.to_excel("eluniversal_" + keyword + ".xlsx")  
+test_df.to_excel("laopinion" + keyword + ".xlsx")  
