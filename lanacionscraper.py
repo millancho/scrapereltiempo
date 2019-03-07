@@ -53,8 +53,11 @@ for page in pages:
             contenido = noodles.find('div', attrs={"class":"td-post-content"})
             if contenido != None:
                 texto = ''
-                for textos in content.find_all('p'):
-                    texto += textos.text
+                if len(content.find_all('p')) != 0:
+                    for textos in content.find_all('p'):
+                        texto += textos.text
+                else:
+                    texto = "Especial"
                 titles.append(title)
                 contents.append(texto)
                 dates.append(date)
