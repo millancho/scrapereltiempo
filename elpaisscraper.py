@@ -42,7 +42,6 @@ for page in pages:
                 
             title = oneArticle.h3.a.text.strip()
             link = "http://www.elpais.com.co" + oneArticle.h3.a['href']
-            date = ''
             content = ''
             html2 = ''
             print(link)
@@ -56,6 +55,7 @@ for page in pages:
                     print("Let's try again...")
                     continue
             noodles = soup(html2.content,'html5lib')
+            date = noodles.find('span', class_="published-at").text.strip()[:-12]
             content = noodles.find('div', attrs = {'class':'article-content'})           
             if content == None :
                 content = noodles.find('div', attrs = {'class':'content-modules'})
