@@ -85,7 +85,7 @@ for page in pages:
         break
         
             
-if count==10 :
+if count==5 :
     test_df.to_excel("elnuevodia_" + keyword + ".xlsx")   
     count=0
   
