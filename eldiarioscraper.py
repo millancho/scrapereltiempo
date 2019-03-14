@@ -89,7 +89,7 @@ for page in pages:
         
             
 if count==10 :
-    test_df.to_excel("eldiario_" + keyword + ".xlsx")   
+    test_df.to_excel("eldiario_" + keyword + ".xlsx", encoding='iso-8859-1')   
     count=0
   
-test_df.to_excel("eldiario_" + keyword + ".xlsx") 
+test_df.to_excel("eldiario_" + keyword + ".xlsx", encoding='iso-8859-1') 
