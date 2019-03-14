@@ -37,7 +37,10 @@ for page in pages:
         for oneArticle in articles:            
             title = oneArticle.find('h2', class_="entry-title").text
             link = oneArticle.find('h2', class_="entry-title").a['href']
-            date = oneArticle.time.text
+            if oneArticle.time == None:
+                date = "Unspecified Date"
+            else:
+                date = oneArticle.time.text            
             content = ''
             html2 = ''
             print(link)
