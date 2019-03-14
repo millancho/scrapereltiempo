@@ -16,12 +16,13 @@ dates = []
 
 start_time = time.time()
 requests = 0
-pages = [str(i) for i in range(1,5500)]
+pages = [str(i) for i in range(0,5500)]
 count = 0
 
 for page in pages:
     
-    url = "https://www.lanacion.com.co/page/"+ page + "/?s=" + keyword
+    
+    url = "http://www.elnuevodia.com.co/nuevodia/search/apachesolr_search/" + keyword +"?page=" + page
     html = get(url)
     htmlsoup = soup(html.content,'html5lib')
     time.sleep(randint(2,4))
