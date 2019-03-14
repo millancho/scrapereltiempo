@@ -22,7 +22,7 @@ count = 0
 for page in pages:
     
     
-    url = "https://www.eldiario.com.co/page/"+ page +"/?s=" keyword
+    url = "https://www.eldiario.com.co/page/"+ page +"/?s=" + keyword
     html = get(url)
     htmlsoup = soup(html.content,'html5lib')
     time.sleep(randint(2,4))
