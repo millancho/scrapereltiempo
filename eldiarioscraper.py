@@ -35,7 +35,7 @@ for page in pages:
     articles = htmlsoup.find_all('article', class_="entry-preview")
     if len(articles) != 0:
         for oneArticle in articles:            
-            title = oneArticle.find('h2', class_="entry-title").text
+            title = oneArticle.find('h2', class_="entry-title").text.encode('utf-8')
             link = oneArticle.find('h2', class_="entry-title").a['href']
             if oneArticle.time == None:
                 date = "Unspecified Date"
@@ -58,7 +58,7 @@ for page in pages:
             if contenido != None:
                 texto = ''
                 for textos in contenido.find_all('p'):
-                    texto += textos.text
+                    texto += textos.text.encode('utf-8')
                 titles.append(title)
                 contents.append(texto)
                 dates.append(date)
